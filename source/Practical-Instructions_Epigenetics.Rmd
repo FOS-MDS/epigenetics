@@ -1,25 +1,20 @@
 ---
-title: "Epigenomics Practical 2019"
+title: "Epigenomics Practical 2020"
 author: "Roderick Slieker and Bas Heijmans"
 output: html_document
 ---
 
 ## Important:
 
-- Download the following files and save them in one folder:
+The following files are available in the `/data` directory of this Project. 
 
-[Tissue data subset.csv](Tissue data subset.csv)
+* Tissue data subset.csv
+* Tissue data chromosome 22.csv
+* Tissue data chromosome 22 significant.csv
+* Significant probes.bed
+* TissueData chr22.RData
 
-[Tissue data chromosome 22.csv](Tissue data chromosome 22.csv)
-
-[Tissue data chromosome 22 significant.csv](Tissue data chromosome 22 significant.csv)
-
-[Significant probes.bed](Significant probes.bed)
-
-[TissueData chr22.RData](TissueData chr22.RData)
-
-
--	At the end of the practical send your work to **r.c.slieker@lumc.nl** as Word document with your name(s) on top of the first page. The file name should contain your surname(s). 
+At the end of the practical upload your work to Brightspace as a PDF document with your name(s) on top of the first page. The file name should contain your surname(s). 
 
 
 ## Introduction
@@ -36,9 +31,7 @@ https://epigeneticsandchromatin.biomedcentral.com/articles/10.1186/1756-8935-6-2
 
 ```{r packages, eval=FALSE}
 library(ggplot2)
-#Change this to the directory where you saved the files
-setwd(" ")
-TissueData <- read.table("Tissue data subset.csv", sep=";", header=T)
+TissueData <- read.table("./data/Tissue data subset.csv", sep=";", header=T)
 ```
 
 **A Which tissues were studied? And on how many cases?**
@@ -87,7 +80,7 @@ anova(lm(cg21507095~Tissue, data=TissueData))
 **A How many CpGs were measured on chromosome 22?**
 
 ```{r Q2A, eval=FALSE}
-TissueData22 <- read.table("Tissue data chromosome 22.csv", sep=";", header=T)
+TissueData22 <- read.table("./data/Tissue data chromosome 22.csv", sep=";", header=T)
 head(TissueData22)
 nrow(TissueData22) #Number of rows
 ```
@@ -126,7 +119,7 @@ ggplot(TissueData22, aes(x=CGI_centric, y=Blood, fill=CGI_centric))+
 **F In question Q1C we calculated the P-value for one CpG site. Now we want to run this for each of the CpGs sites across chromosome 22. Instead of saving data as csv, one can also save it as RData files. Load the RData file TissueData chr22.RData. This file contains two files, namely samplesheet and TissueDataChr22. Look at both files. What are the dimensions of both files?**
 
 ```{r Q2F, eval=FALSE}
-a = load("TissueData chr22.RData") # Contains two files samplesheet, TissueDataChr22
+a = load("./data/TissueData chr22.RData") # Contains two files samplesheet, TissueDataChr22
 a
 ```
 
@@ -181,7 +174,7 @@ table(TissueData22$Pval_corrected)
 **E Now, we want to know whether a particular genomic feature is overrepresented in the identified significant CpG sites. You will focus on the two best covered genic annotations (proximal promoters and gene bodies). The significant CpGs in these two features can be found in the file Tissue data chromosome 22 significant.csv. Load the file. Make a frequency table of the number of CpGs per group and split by CpG islands and non-CpG islands.**
 
 ```{r Q3E, eval=FALSE}
-TissueData22sign <- read.table("Tissue data chromosome 22 significant.csv", sep=";", header=T)
+TissueData22sign <- read.table("./data/Tissue data chromosome 22 significant.csv", sep=";", header=T)
 head(TissueData22sign)
 
 

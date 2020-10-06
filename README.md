@@ -1,2 +1,0 @@
-# epigenetics
-Introduction to Epigenetics
