@@ -370,15 +370,17 @@ summary {
 
 <div id="important" class="section level2">
 <h2>Important:</h2>
-<p>The following files are available in the <code>/data</code> directory of this Project.</p>
 <ul>
-<li>Tissue data subset.csv</li>
-<li>Tissue data chromosome 22.csv</li>
-<li>Tissue data chromosome 22 significant.csv</li>
-<li>Significant probes.bed</li>
-<li>TissueData chr22.RData</li>
+<li>Download the following files and save them in one folder:</li>
 </ul>
-<p>At the end of the practical upload your work to Brightspace as a PDF document with your name(s) on top of the first page. The file name should contain your surname(s).</p>
+<p><a href="Tissue%20data%20subset.csv">Tissue data subset.csv</a></p>
+<p><a href="Tissue%20data%20chromosome%2022.csv">Tissue data chromosome 22.csv</a></p>
+<p><a href="Tissue%20data%20chromosome%2022%20significant.csv">Tissue data chromosome 22 significant.csv</a></p>
+<p><a href="Significant%20probes.bed">Significant probes.bed</a></p>
+<p><a href="TissueData%20chr22.RData">TissueData chr22.RData</a></p>
+<ul>
+<li>At the end of the practical upload your work to Brightspace. The file name should contain your surname(s).</li>
+</ul>
 </div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
@@ -439,14 +441,23 @@ nrow(TissueData22) #Number of rows</code></pre>
   geom_violin()+
   scale_fill_manual(values=c(&quot;#440154FF&quot;,&quot;#3B528BFF&quot;,&quot;#21908CFF&quot;,&quot;#5DC863FF&quot;,&quot;#FDE725FF&quot;))+
   theme(axis.text.x = element_text(angle=90, hjust=1, vjust=0.5))</code></pre>
-<p><strong>F In question Q1C we calculated the P-value for one CpG site. Now we want to run this for each of the CpGs sites across chromosome 22. Instead of saving data as csv, one can also save it as RData files. Load the RData file TissueData chr22.RData. This file contains two files, namely samplesheet and TissueDataChr22. Look at both files. What are the dimensions of both files?</strong></p>
+<p><strong>F Now combine the two annotations and make the figure again. How do the two annotations relate to each other</strong></p>
+<pre class="r"><code>ggplot(TissueData22, aes(x=Gene_centric, y=Blood, fill=Gene_centric))+
+  geom_violin()+
+  scale_fill_manual(values=c(&quot;#440154FF&quot;,&quot;#3B528BFF&quot;,&quot;#21908CFF&quot;,&quot;#5DC863FF&quot;,&quot;#FDE725FF&quot;))+
+  theme(axis.text.x = element_text(angle=90, hjust=1, vjust=0.5))+
+  facet_grid(CGI_centric~., scale=&quot;free_x&quot;)</code></pre>
+</div>
+<div id="question-3" class="section level2">
+<h2>Question 3</h2>
+<p><strong>A In question Q1C we calculated the P-value for one CpG site. Now we want to run this for each of the CpGs sites across chromosome 22. Instead of saving data as csv, one can also save it as RData files. Load the RData file TissueData chr22.RData. This file contains two files, namely samplesheet and TissueDataChr22. Look at both files. What are the dimensions of both files?</strong></p>
 <pre class="r"><code>a = load(&quot;./data/TissueData chr22.RData&quot;) # Contains two files samplesheet, TissueDataChr22
 a</code></pre>
 <pre class="r"><code>head(samplesheet)
 dim(samplesheet) # Number of rows and number of columns
 head(TissueDataChr22)
 dim(TissueDataChr22)</code></pre>
-<p><strong>G In R we can use functions to easily run a model across many loci. Run the function for the first and the second line.</strong></p>
+<p><strong>B In R we can use functions to easily run a model across many loci. Run the function for the first and the second line.</strong></p>
 <pre class="r"><code>getPvalue &lt;- function(row, data, samplesheet)
 {
   fit &lt;- anova(lm(data[row,]~samplesheet$Tissue)) # Run the model
@@ -456,7 +467,7 @@ dim(TissueDataChr22)</code></pre>
 
 #Run for one CpG site
 getPvalue(&#39;cg00017461&#39;, data=TissueDataChr22, samplesheet=samplesheet)</code></pre>
-<p><strong>H Now run the model across all CpGs on chromosome 22. Note that this takes a bit of time - after all R is running 8513 tests - and note that this couldn’t be achieved using SPSS (only when the tests were done one by one). Look at the output.</strong></p>
+<p><strong>C Now run the model across all CpGs on chromosome 22. Note that this takes a bit of time - after all R is running 8513 tests - and note that this couldn’t be achieved using SPSS (only when the tests were done one by one). Look at the output.</strong></p>
 <pre class="r"><code>#Which CpGs are there
 cpgs &lt;- rownames(TissueDataChr22)
 head(cpgs)
@@ -466,8 +477,8 @@ head(res)
 ResultsChromosome22 &lt;- do.call(rbind, res) #Combine to a table
 head(ResultsChromosome22)</code></pre>
 </div>
-<div id="question-3" class="section level2">
-<h2>Question 3</h2>
+<div id="question-4" class="section level2">
+<h2>Question 4</h2>
 <p><strong>A When measuring many features (here CpGs), one must account for the fact that many statistical tests are being performed. Small P-values will be observed purely by chance. In this case, the number of tests equals the number of CpGs in the file. Which P-value threshold is commonly used to declare an association statistically significant in case of a single statistical test? How many P-values lower than this threshold would you expect by chance in this chromosome 22 data set?</strong></p>
 <p><strong>B An intuitive and popular (but perhaps somewhat conservative) way to correct the p-value is to multiply the calculated P-value by the number of tests performed or correct the significance level, i.e. divide the P-value threshold for a single test by the total number of tests. This is called Bonferroni correction. What is the Bonferroni-corrected P-value for chromosome 22 (i.e. the threshold for statistical significance after accounting for multiple testing)?</strong></p>
 <p><strong>C For question 1C, you calculated a P-value for the example CpG site. Compare this P-value to the P-value calculated in 3B (after all it’s only one of many CpG sites measured on chromosome 22). Is the difference significant after multiple testing correction?</strong></p>
@@ -534,8 +545,8 @@ chisq.test(matrix(c(a,b,c,d), ncol=2, byrow = TRUE))
 #Or Fisher exact test (better)
 fisher.test(x = matrix(c(a,b,c,d), ncol=2, byrow = TRUE))</code></pre>
 </div>
-<div id="question-4" class="section level2">
-<h2>Question 4</h2>
+<div id="question-5" class="section level2">
+<h2>Question 5</h2>
 <p><strong>Now, you will focus on ‘top-hits’ (=CpG sites with lowest P-values)</strong></p>
 <p><strong>A Sort the file by P-value (ascending). Select the two CpG sites with the lowest and second lowest P-value. What is the methylation level of these CpGs in the tissues investigated? What is the largest difference in DNA methylation observed?</strong></p>
 <pre class="r"><code>TissueData22signOrdered &lt;- TissueData22sign[order(TissueData22sign$Pval),]
@@ -548,8 +559,8 @@ head(TissueData22signOrdered)</code></pre>
 <p><strong>G Look up the nearest gene of the tophits in GeneCards (www.genecards.org). Look at the protein expression and the mRNA expression for the three tissues studied if available. Is the gene expressed in a tissue-specific fashion?</strong></p>
 <p><strong>H To gain insight into gene function related to differentially methylation you can use GREAT (Genomic Regions Enrichment of Annotations Tool). Go to the GREAT website(<a href="http://bejerano.stanford.edu/great/public/html/index.php" class="uri">http://bejerano.stanford.edu/great/public/html/index.php</a>). Select human hg19/ GRCh37. Select all significant CpG sites from the csv file and copy the chromosome, start and end column and paste that into test regions (after clicking BED data). Also, copy all CpG sites and paste that into background regions (click BED data). Click Show Settings and select single nearest gene. Click submit and wait (may take some time) until the site has calculated the enrichment in gene categories (Biological processes). Which biological processes are enriched for differential methylation? How does that relate to the tissues studied?</strong></p>
 </div>
-<div id="question-5-facultative" class="section level2">
-<h2>Question 5 (Facultative)</h2>
+<div id="question-6-facultative" class="section level2">
+<h2>Question 6 (Facultative)</h2>
 <p><strong>There is increasing evidence that DNA methylation is associated with alternative transcription events. A paper showed that there is a role for intragenic (differential) DNA methylation in the regulation of alternative transcription events (Maunakea AK et al. Conserved role of intragenic DNA methylation in regulating alternative promoters. Nature 2010; 466: 253-7).</strong></p>
 <p><strong>A Read the abstract and inspect Figure 3a in the paper. In what process is DNA methylation implicated to play a role in? For which gene and which annotation within that gene do the authors provide experimental evidence for this role? Discuss the tracks given in Figure 3a and their implication.</strong></p>
 <p><strong>B Look up this gene in UCSC for you own data. Display the custom track you used before and CpG island track. Argue why the data on the three tissues is either in line or at odds with the observations of Maunakea et al.</strong></p>
