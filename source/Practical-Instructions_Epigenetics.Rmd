@@ -6,7 +6,7 @@ output: html_document
 
 ## Important:
 
-- Download the following files and save them in one folder:
+- Within the RStudio Cloud you will find the following files:
 
 [Tissue data subset.csv](Tissue data subset.csv)
 
