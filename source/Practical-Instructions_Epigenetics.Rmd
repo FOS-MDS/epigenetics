@@ -1,5 +1,5 @@
 ---
-title: "Epigenomics Practical 2020"
+title: "Epigenomics Practical 2021"
 author: "Roderick Slieker and Bas Heijmans"
 output: html_document
 ---
@@ -41,13 +41,9 @@ TissueData <- read.table("./data/Tissue data subset.csv", sep=";", header=T)
 
 **A Which tissues were studied? And on how many cases?**
 
-```{r Q1A, eval=FALSE}
-head(TissueData) # First 6 lines of the data
-str(TissueData) # Characteristics of the data
-unique(TissueData$Tissue) # What groups are in the vector?
-```
-
 **B Make a plot of DNA methylation in the different tissues. Also, calculate the mean methylation and standard deviation for the tissues. Do you think that these differences are biologically relevant?**
+
+`` `r emo::ji("warning")` `` *You can use `by` to calculate a mean and sd of groups*
 
 ```{r Q1B, eval=FALSE}
 ggplot(TissueData, aes(x=Tissue, y=cg21507095, color=Tissue))+ # Assign variables to x, y, and fill
@@ -55,10 +51,6 @@ ggplot(TissueData, aes(x=Tissue, y=cg21507095, color=Tissue))+ # Assign variable
   geom_jitter(width=0.2)+
   scale_colour_manual(values=c("#009AC7","#132B41","#F9A23F"))+ # Give custom colors to the boxes using HEX colors
   ylim(0,1)
-#Mean and SD
-# Data = data to calculate statistic over, INDICES = grouping variable, FUN = function to be used
-by(data = TissueData$cg21507095, INDICES = TissueData$Tissue, FUN=mean)
-by(data = TissueData$cg21507095, INDICES = TissueData$Tissue, FUN=sd)
 ```
 
 **C Test whether the difference is statistically significant using ANOVA. Is the difference between tissues statistically significant?** 
@@ -92,10 +84,8 @@ nrow(TissueData22) #Number of rows
 
 **B Make a histogram for DNA methylation data for blood. Inspect the histogram and describe the characteristics of DNA methylation in the human genome (note that the histogram will look virtually identical for other chromosomes and tissues).**
 
-```{r Q2B, eval=FALSE}
-ggplot(TissueData22, aes(x=Blood))+
-  geom_histogram(bins = 200)
-```
+`` `r emo::ji("warning")` `` *Have a look at `geom_histogram`*
+
 
 **C The genome can be categorized in different genomic features. Gene-centric annotations divide the genome relative to gene structure/function. One can also annotate CpGs based on the CpG density, that is CpG islands and their surroundings. Use the annotation figure below to re-answer 1E.**
 
@@ -104,32 +94,14 @@ ggplot(TissueData22, aes(x=Blood))+
 
 **D The file Tissue data chromosome 22.csv contains columns with annotation information. Make violin plots for the gene centric annotation for blood. Describe the differences in DNA methylation across annotations and explain whether this is according to your expectation given your knowledge of the function of DNA methylation.**
 
-```{r Q2D, eval=FALSE}
-ggplot(TissueData22, aes(x=Gene_centric, y=Blood, fill=Gene_centric))+
-  geom_violin()+
-  scale_fill_manual(values=c("#440154FF","#3B528BFF","#21908CFF","#5DC863FF","#FDE725FF"))+
-  theme(axis.text.x = element_text(angle=90, hjust=1, vjust=0.5)) # Rotate axis labels
-```
+`` `r emo::ji("warning")` `` *Have a look at `geom_violin` and geom_boxplot. Put the annotation on the x-axis and the DNA methylation level on the y-axis*
 
 
 **E Do the same for the CpG island annotation. Where is DNA methylation lowest?**
 
-```{r Q2E, eval=FALSE}
-ggplot(TissueData22, aes(x=CGI_centric, y=Blood, fill=CGI_centric))+
-  geom_violin()+
-  scale_fill_manual(values=c("#440154FF","#3B528BFF","#21908CFF","#5DC863FF","#FDE725FF"))+
-  theme(axis.text.x = element_text(angle=90, hjust=1, vjust=0.5))
-```
-
 **F Now combine the two annotations and make the figure again. How do the two annotations relate to each other**
 
-```{r Q2F, eval=FALSE, fig.width=9, fig.height=12}
-ggplot(TissueData22, aes(x=Gene_centric, y=Blood, fill=Gene_centric))+
-  geom_violin()+
-  scale_fill_manual(values=c("#440154FF","#3B528BFF","#21908CFF","#5DC863FF","#FDE725FF"))+
-  theme(axis.text.x = element_text(angle=90, hjust=1, vjust=0.5))+
-  facet_grid(CGI_centric~., scale="free_x")
-```
+`` `r emo::ji("warning")` `` *You can add a secondary group by adding that group as fill colour!*
 
 ## Question 3
 
@@ -150,7 +122,7 @@ dim(TissueDataChr22)
 **B In R we can use functions to easily run a model across many loci. Run the function for the first and the second line.**
 
 ```{r Q3B, eval=FALSE}
-getPvalue <- function(row, data, samplesheet)
+getPvalue <- function(row, data, samplesheet) # Define the function
 {
   fit <- anova(lm(data[row,]~samplesheet$Tissue)) # Run the model
   out <- data.frame(CG = row, Fvalue = fit$`F value`[1], Pvalue = fit$`Pr(>F)`[1]) # Make a data.frame for the output
@@ -184,22 +156,13 @@ head(ResultsChromosome22)
 
 **D The column Pval_corrected contains 0 and 1's that mark non-significant and significant CpGs based on the P-value calculated in 3B. How many CpGs (absolute and as percentage) are significant after multiple testing?**
 
-```{r Q4D, eval=FALSE}
-table(TissueData22$Pval_corrected)
-```
+`` `r emo::ji("warning")` `` *Have a look at the `table` function*
 
 **E Now, we want to know whether a particular genomic feature is overrepresented in the identified significant CpG sites. You will focus on the two best covered genic annotations (proximal promoters and gene bodies). The significant CpGs in these two features can be found in the file Tissue data chromosome 22 significant.csv. Load the file. Make a frequency table of the number of CpGs per group and split by CpG islands and non-CpG islands.**
 
 ```{r Q3E, eval=FALSE}
 TissueData22sign <- read.table("./data/Tissue data chromosome 22 significant.csv", sep=";", header=T)
 head(TissueData22sign)
-
-
-table(TissueData22sign$Gene_centric)
-table(TissueData22sign$CGI_centric)
-
-table3e <- table(TissueData22sign$Gene_centric, TissueData22sign$CGI_centric)
-table3e
 ```
 
 **F Now you have the frequency per combined feature (so for example proximal promoter CpG islands). Calculate the percentages of the number of significant CpGs per feature compared to the total number of significant CpGs from 3D. What is your interpretation?**
@@ -216,25 +179,6 @@ round(table3f,1)
 Proximal Promoter | a | b| a+b |
 Elsewhere | c | d | c+d |
 Total | a+c | b+d |
-
-```{r, eval=FALSE}
-#Calculate a
-a <- table(TissueData22sign$Gene_centric)["Proximal promoter"]
-n.prox <- table(TissueData22$Gene_centric)["Proximal promoter"]
-
-#Calculate b-d
-b <- n.prox - a
-c <- 1805 - a
-d <- 8463 - a - b - c
-
-#Now calculate the odds ratio
-OR <- (a/b)/(c/d)
-
-#One can formally test the enrichment / depletion with a chi-squared test
-chisq.test(matrix(c(a,b,c,d), ncol=2, byrow = TRUE))
-#Or Fisher exact test (better)
-fisher.test(x = matrix(c(a,b,c,d), ncol=2, byrow = TRUE))
-``` 
 
 ## Question 5
 
