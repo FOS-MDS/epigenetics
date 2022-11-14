@@ -1,5 +1,5 @@
 ---
-title: "Epigenomics Practical 2021"
+title: "Epigenomics Practical 2022"
 author: "Roderick Slieker and Bas Heijmans"
 output: html_document
 ---
@@ -43,7 +43,7 @@ TissueData <- read.table("./data/Tissue data subset.csv", sep=";", header=T)
 
 **B Make a plot of DNA methylation in the different tissues. Also, calculate the mean methylation and standard deviation for the tissues. Do you think that these differences are biologically relevant?**
 
-`` `r emo::ji("warning")` `` *You can use `by` to calculate a mean and sd of groups*
+*You can use `by` to calculate a mean and sd of groups*
 
 ```{r Q1B, eval=FALSE}
 ggplot(TissueData, aes(x=Tissue, y=cg21507095, color=Tissue))+ # Assign variables to x, y, and fill
@@ -84,7 +84,7 @@ nrow(TissueData22) #Number of rows
 
 **B Make a histogram for DNA methylation data for blood. Inspect the histogram and describe the characteristics of DNA methylation in the human genome (note that the histogram will look virtually identical for other chromosomes and tissues).**
 
-`` `r emo::ji("warning")` `` *Have a look at `geom_histogram`*
+*Have a look at `geom_histogram`*
 
 
 **C The genome can be categorized in different genomic features. Gene-centric annotations divide the genome relative to gene structure/function. One can also annotate CpGs based on the CpG density, that is CpG islands and their surroundings. Use the annotation figure below to re-answer 1E.**
@@ -94,14 +94,14 @@ nrow(TissueData22) #Number of rows
 
 **D The file Tissue data chromosome 22.csv contains columns with annotation information. Make violin plots for the gene centric annotation for blood. Describe the differences in DNA methylation across annotations and explain whether this is according to your expectation given your knowledge of the function of DNA methylation.**
 
-`` `r emo::ji("warning")` `` *Have a look at `geom_violin` and geom_boxplot. Put the annotation on the x-axis and the DNA methylation level on the y-axis*
+*Have a look at `geom_violin` and geom_boxplot. Put the annotation on the x-axis and the DNA methylation level on the y-axis*
 
 
 **E Do the same for the CpG island annotation. Where is DNA methylation lowest?**
 
 **F Now combine the two annotations and make the figure again. How do the two annotations relate to each other**
 
-`` `r emo::ji("warning")` `` *You can add a secondary group by adding that group as fill colour!*
+*You can add a secondary group by adding that group as fill colour!*
 
 ## Question 3
 
@@ -156,7 +156,7 @@ head(ResultsChromosome22)
 
 **D The column Pval_corrected contains 0 and 1's that mark non-significant and significant CpGs based on the P-value calculated in 3B. How many CpGs (absolute and as percentage) are significant after multiple testing?**
 
-`` `r emo::ji("warning")` `` *Have a look at the `table` function*
+*Have a look at the `table` function*
 
 **E Now, we want to know whether a particular genomic feature is overrepresented in the identified significant CpG sites. You will focus on the two best covered genic annotations (proximal promoters and gene bodies). The significant CpGs in these two features can be found in the file Tissue data chromosome 22 significant.csv. Load the file. Make a frequency table of the number of CpGs per group and split by CpG islands and non-CpG islands.**
 
