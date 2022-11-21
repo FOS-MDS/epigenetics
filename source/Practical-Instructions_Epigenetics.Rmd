@@ -43,22 +43,16 @@ TissueData <- read.table("./data/Tissue data subset.csv", sep=";", header=T)
 
 **B Make a plot of DNA methylation in the different tissues. Also, calculate the mean methylation and standard deviation for the tissues. Do you think that these differences are biologically relevant?**
 
-*You can use `by` to calculate a mean and sd of groups*
+`` `r emo::ji("zoom")` `` *You can use `by` to calculate a mean and sd of groups*
 
-```{r Q1B, eval=FALSE}
-ggplot(TissueData, aes(x=Tissue, y=cg21507095, color=Tissue))+ # Assign variables to x, y, and fill
-  stat_summary(fun.data = "mean_cl_boot",  size = 1)+
-  geom_jitter(width=0.2)+
-  scale_colour_manual(values=c("#009AC7","#132B41","#F9A23F"))+ # Give custom colors to the boxes using HEX colors
-  ylim(0,1)
-```
+`` `r emo::ji("zoom")` `` *For the figure you can use geom_jitter or ggbeeswarm::geom_beeswarm combined with stat_summary(fun.data = "mean_cl_boot",  size = 1)*
+
+`` `r emo::ji("zoom")` `` *To change the colors you can use scale_colour_manual*
 
 **C Test whether the difference is statistically significant using ANOVA. Is the difference between tissues statistically significant?** 
 
-```{r Q1C, eval=FALSE}
-#Run the anova for one CpG
-anova(lm(cg21507095~Tissue, data=TissueData)) 
-``` 
+`` `r emo::ji("zoom")` `` *You can use anova(lm(outcome~determinant, data=Data))*
+
 
 **D Now, use the UCSC Genome Browser to annotate the CpG site. Go to http://genome.ucsc.edu/, click Genomes (Assembly: Feb 2009 (GRCh37/hg19)) and look up the position of the CpG site (type the CpG identifier in the search term box). Then scroll down to Regulation, find CpG islands, set this feature to 'show' and click refresh on the right of the screen. Describe in your own words what CpG islands do and how they are defined ( right click on the CpG island track, Show details).**
 
@@ -84,7 +78,7 @@ nrow(TissueData22) #Number of rows
 
 **B Make a histogram for DNA methylation data for blood. Inspect the histogram and describe the characteristics of DNA methylation in the human genome (note that the histogram will look virtually identical for other chromosomes and tissues).**
 
-*Have a look at `geom_histogram`*
+`` `r emo::ji("zoom")` `` *Have a look at `geom_histogram`*
 
 
 **C The genome can be categorized in different genomic features. Gene-centric annotations divide the genome relative to gene structure/function. One can also annotate CpGs based on the CpG density, that is CpG islands and their surroundings. Use the annotation figure below to re-answer 1E.**
@@ -94,14 +88,14 @@ nrow(TissueData22) #Number of rows
 
 **D The file Tissue data chromosome 22.csv contains columns with annotation information. Make violin plots for the gene centric annotation for blood. Describe the differences in DNA methylation across annotations and explain whether this is according to your expectation given your knowledge of the function of DNA methylation.**
 
-*Have a look at `geom_violin` and geom_boxplot. Put the annotation on the x-axis and the DNA methylation level on the y-axis*
+`` `r emo::ji("zoom")` `` *Have a look at `geom_violin` and geom_boxplot. Put the annotation on the x-axis and the DNA methylation level on the y-axis*
 
 
 **E Do the same for the CpG island annotation. Where is DNA methylation lowest?**
 
 **F Now combine the two annotations and make the figure again. How do the two annotations relate to each other**
 
-*You can add a secondary group by adding that group as fill colour!*
+`` `r emo::ji("zoom")` `` *You can add a secondary group by adding that group as fill colour!*
 
 ## Question 3
 
@@ -112,12 +106,7 @@ a = load("./data/TissueData chr22.RData") # Contains two files samplesheet, Tiss
 a
 ```
 
-```{r, eval=FALSE}
-head(samplesheet)
-dim(samplesheet) # Number of rows and number of columns
-head(TissueDataChr22)
-dim(TissueDataChr22)
-```
+`` `r emo::ji("zoom")` `` *Use `dim` and `head`*
 
 **B In R we can use functions to easily run a model across many loci. Run the function for the first and the second line.**
 
@@ -156,7 +145,7 @@ head(ResultsChromosome22)
 
 **D The column Pval_corrected contains 0 and 1's that mark non-significant and significant CpGs based on the P-value calculated in 3B. How many CpGs (absolute and as percentage) are significant after multiple testing?**
 
-*Have a look at the `table` function*
+`` `r emo::ji("zoom")` `` *Have a look at the `table` function*
 
 **E Now, we want to know whether a particular genomic feature is overrepresented in the identified significant CpG sites. You will focus on the two best covered genic annotations (proximal promoters and gene bodies). The significant CpGs in these two features can be found in the file Tissue data chromosome 22 significant.csv. Load the file. Make a frequency table of the number of CpGs per group and split by CpG islands and non-CpG islands.**
 
@@ -203,7 +192,21 @@ head(TissueData22signOrdered)
 
 **G Look up the nearest gene of the tophits in GeneCards (www.genecards.org). Look at the protein expression and the mRNA expression for the three tissues studied if available. Is the gene expressed in a tissue-specific fashion?**
 
-**H To gain insight into gene function related to differentially methylation you can use GREAT (Genomic Regions Enrichment of Annotations Tool). Go to the GREAT website(http://bejerano.stanford.edu/great/public/html/index.php). Select human hg19/ GRCh37. Select all significant CpG sites from the csv file and copy the chromosome, start and end column and paste that into test regions (after clicking BED data). Also, copy all CpG sites and paste that into background regions (click BED data). Click Show Settings and select single nearest gene. Click submit and wait (may take some time) until the site has calculated the enrichment in gene categories (Biological processes).  Which biological processes are enriched for differential methylation? How does that relate to the tissues studied?** 
+**H To gain insight into gene function related to differentially methylation you can use GREAT (Genomic Regions Enrichment of Annotations Tool). Go to the GREAT website(http://bejerano.stanford.edu/great/public/html/index.php). Select human hg19/ GRCh37. Perform the following steps:**
+
+**Select all significant CpG sites from the csv file and copy the chromosome, start and end column and paste that into test regions (after clicking BED data).**
+
+**Copy all CpG sites and paste that into background regions (click BED data).**
+
+**Click Show Settings and select single nearest gene. Click submit and wait (may take some time) until the site has calculated the enrichment in gene categories (Biological processes).**
+
+**Which biological processes are enriched for differential methylation? How does that relate to the tissues studied?** 
+
+**It should look like this:**
+
+![GREAT](./data/Example_GREAT.png)
+
+![GREAT](./data/Example_GREAT2.png)
 
 ## Question 6 (Facultative)
 
